@@ -1,0 +1,22 @@
+{
+  "name": "auth-core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --test",
+    "start": "node src/server.js",
+    "coverage": "c8 --100 node --test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "c8": "^10.1.3"
+  }
+}
