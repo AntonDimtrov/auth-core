@@ -27,3 +27,9 @@ test("validatePassword works", () => {
   assert.ok(!validatePassword("abcdefghi"));
   assert.ok(!validatePassword("AAAAAAAA"));
 });
+
+test("validation returns false for non-string inputs", () => {
+  assert.equal(validateEmail(123), false);
+  assert.equal(validateName(null), false);
+  assert.equal(validatePassword(undefined), false);
+});
