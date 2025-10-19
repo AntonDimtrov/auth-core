@@ -1,6 +1,7 @@
 import { query } from "../db/index.js";
 import { hashPassword, verifyPassword } from "./crypto.js";
 import { validateEmail, validateName, validatePassword } from "./validation.js";
+import { createSession, deleteSession, getSession } from "./sessions.js";
 
 export async function registerUser({ email, firstName, lastName, password }) {
   if (
@@ -17,9 +18,7 @@ export async function registerUser({ email, firstName, lastName, password }) {
   const existing = await query("SELECT id FROM users WHERE email = $1", [
     normalizedEmail,
   ]);
-  if (existing.rows.length > 0) {
-    throw new Error("Email already registered");
-  }
+  if (existing.rows.length > 0) throw new Error("Email already registered");
 
   const { hash, salt } = await hashPassword(password);
 
@@ -54,4 +53,31 @@ export async function authenticateUser(email, password) {
     first_name: user.first_name,
     last_name: user.last_name,
   };
+}
+
+export async function loginUser({ email, password }) {
+  const user = await authenticateUser(email, password);
+  if (!user) throw new Error("Invalid email or password");
+
+  const session = await createSession(user.id);
+  return { ...user, session_id: session.id };
+}
+
+export async function logoutUser(sessionId) {
+  if (!sessionId) throw new Error("Missing session ID");
+  const deleted = await deleteSession(sessionId);
+  if (!deleted) throw new Error("Session not found");
+  return { message: "Logged out successfully" };
+}
+
+export async function getUserBySession(sessionId) {
+  const session = await getSession(sessionId);
+  return session
+    ? {
+        id: session.user_id,
+        email: session.email,
+        first_name: session.first_name,
+        last_name: session.last_name,
+      }
+    : null;
 }

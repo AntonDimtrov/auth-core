@@ -1,7 +1,7 @@
 import http from "http";
 import dotenv from "dotenv";
-import { registerUser } from "./services/users.js";
-
+import { registerUser, loginUser, logoutUser } from "./services/users.js";
+import { updateUserProfile } from "./services/profile.js";
 dotenv.config();
 
 function sendJSON(res, status, data) {
@@ -32,6 +32,35 @@ export function createServer() {
         sendJSON(res, 201, { user });
         return;
       }
+
+      if (req.method === "POST" && req.url === "/api/login") {
+        const data = await parseJSON(req);
+        const user = await loginUser(data);
+        sendJSON(res, 200, { user });
+        return;
+      }
+
+      if (req.method === "POST" && req.url === "/api/logout") {
+        const data = await parseJSON(req);
+        const result = await logoutUser(data.token);
+        sendJSON(res, 200, result);
+        return;
+      }
+
+      if (req.method === "POST" && req.url === "/api/login") {
+        const data = await parseJSON(req);
+        const result = await loginUser(data.email, data.password);
+        sendJSON(res, 200, result);
+        return;
+      }
+
+      if (req.method === "POST" && req.url === "/api/update") {
+        const data = await parseJSON(req);
+        const updated = await updateUserProfile(data.token, data);
+        sendJSON(res, 200, { user: updated });
+        return;
+      }
+
       sendJSON(res, 404, { error: "Not found" });
     } catch (err) {
       console.error(err);

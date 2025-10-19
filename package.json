@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test node --test",
+    "test": "NODE_ENV=test node --test --test-concurrency=1",
     "start": "node src/server.js",
-    "coverage": "c8 --100 node --test"
+    "coverage": " NODE_ENV=test c8 --100 node --test --test-concurrency=1"
   },
   "keywords": [],
   "author": "",
