@@ -35,6 +35,11 @@ function hide(id) {
 }
 
 async function register() {
+  if (!validateCaptcha()) {
+    alert("Wrong CAPTCHA!");
+    generateCaptcha();
+    return;
+  }
   const email = val("rEmail");
   const firstName = val("rFirst");
   const lastName = val("rLast");
