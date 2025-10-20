@@ -55,9 +55,18 @@ test("POST /api/update rejects invalid session", async () => {
 test("POST /api/update rejects invalid name or password", async () => {
   await resetDb();
 
-  const { session_id } = await loginUser({
+  const plainPassword = "Abc123!!";
+
+  const user = await registerUser({
     email: "badupdate@example.com",
-    password: "Abc123!!",
+    firstName: "Good",
+    lastName: "User",
+    password: plainPassword,
+  });
+
+  const { session_id } = await loginUser({
+    email: user.email,
+    password: plainPassword,
   });
 
   await assert.rejects(
