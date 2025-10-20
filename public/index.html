@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Auth Core</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Welcome</h1>
+
+      <section id="registerForm">
+        <h2>Create account</h2>
+        <input id="rEmail" placeholder="Email" />
+        <input id="rFirst" placeholder="First name" />
+        <input id="rLast" placeholder="Last name" />
+        <input id="rPass" type="password" placeholder="Password" />
+        <button id="registerBtn">Register</button>
+        <p class="muted">
+          Already have an account?
+          <a href="#" id="goLogin">Sign in</a>
+        </p>
+      </section>
+
+      <section id="loginForm" style="display: none">
+        <h2>Sign in</h2>
+        <input id="lEmail" placeholder="Email" />
+        <input id="lPass" type="password" placeholder="Password" />
+        <button id="loginBtn">Login</button>
+        <p class="muted">
+          Don't have an account?
+          <a href="#" id="goRegister">Create one</a>
+        </p>
+      </section>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
