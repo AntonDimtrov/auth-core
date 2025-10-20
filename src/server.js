@@ -85,13 +85,6 @@ export function createServer() {
         return;
       }
 
-      if (req.method === "POST" && req.url === "/api/login") {
-        const data = await parseJSON(req);
-        const result = await loginUser(data.email, data.password);
-        sendJSON(res, 200, result);
-        return;
-      }
-
       if (req.method === "POST" && req.url === "/api/update") {
         const data = await parseJSON(req);
         const updated = await updateUserProfile(data.token, data);
@@ -128,6 +121,7 @@ export function createServer() {
   });
 }
 
+/* istanbul ignore next */
 if (process.env.NODE_ENV !== "test") {
   const PORT = process.env.PORT || 8080;
   const server = createServer();
