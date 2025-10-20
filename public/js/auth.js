@@ -1,5 +1,4 @@
-// auth.js
-import { val, markInvalid, resetValidation, clearForm } from "./dom-utils.js";
+import { val, resetValidation, clearForm } from "./dom-utils.js";
 import { showToast } from "./toast.js";
 import { validateRegisterFields } from "./validation.js";
 
@@ -49,7 +48,7 @@ export async function login() {
   const email = val("lEmail");
   const password = val("lPass");
 
-  const res = await fetch("/api/login", {
+  const res = await fetch(`${window.location.origin}/api/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),

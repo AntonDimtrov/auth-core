@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sign Up — AuthCore</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Create Account</h1>
+
+      <form id="registerForm">
+        <input id="rEmail" placeholder="Email" />
+        <p id="rEmailMsg" class="field-message"></p>
+
+        <input id="rFirst" placeholder="First name" />
+        <p id="rFirstMsg" class="field-message"></p>
+
+        <input id="rLast" placeholder="Last name" />
+        <p id="rLastMsg" class="field-message"></p>
+
+        <input id="rPass" type="password" placeholder="Password" />
+        <p id="rPassMsg" class="field-message"></p>
+
+        <div id="captcha"></div>
+        <input id="captchaInput" placeholder="Enter CAPTCHA" />
+
+        <button id="registerBtn">Register</button>
+      </form>
+
+      <p class="muted">
+        Already have an account?
+        <a href="signin.html">Sign in</a>
+      </p>
+    </div>
+
+    <script src="./js/captcha.js"></script>
+    <script type="module" src="./js/signup.js"></script>
+  </body>
+</html>

@@ -2,44 +2,25 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Auth Core</title>
+    <title>AuthCore</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="container">
-      <h1>Welcome</h1>
+    <div class="container hero">
+      <h1>Welcome to AuthCore</h1>
+      <p>
+        A simple authentication system with secure registration, login, and
+        profile management.
+      </p>
 
-      <section id="registerForm">
-        <h2>Create account</h2>
-        <input id="rEmail" placeholder="Email" />
-        <p id="rEmailMsg" class="field-message"></p>
-        <input id="rFirst" placeholder="First name" />
-        <p id="rFirstMsg" class="field-message"></p>
-        <input id="rLast" placeholder="Last name" />
-        <p id="rLastMsg" class="field-message"></p>
-        <input id="rPass" type="password" placeholder="Password" />
-        <p id="rPassMsg" class="field-message"></p>
-        <div id="captcha"></div>
-        <input id="captchaInput" placeholder="Enter CAPTCHA" />
-        <button id="registerBtn">Register</button>
-        <p class="muted">
-          Already have an account?
-          <a href="#" id="goLogin">Sign in</a>
-        </p>
-      </section>
+      <div class="buttons">
+        <a href="signin.html">Sign In</a>
+        <a href="signup.html" class="secondary">Create Account</a>
+      </div>
 
-      <section id="loginForm" style="display: none">
-        <h2>Sign in</h2>
-        <input id="lEmail" placeholder="Email" />
-        <input id="lPass" type="password" placeholder="Password" />
-        <button id="loginBtn">Login</button>
-        <p class="muted">
-          Don't have an account?
-          <a href="#" id="goRegister">Create one</a>
-        </p>
-      </section>
+      <footer>
+        <p>© 2025 AuthCore — Built with Vanilla JS & PostgreSQL</p>
+      </footer>
     </div>
-    <script src="./js/captcha.js"></script>
-    <script type="module" src="script.js"></script>
   </body>
 </html>

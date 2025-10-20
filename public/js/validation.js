@@ -35,12 +35,10 @@ export function validateField(el) {
     }
   }
 
-  // reset visual state
   el.classList.remove("invalid", "valid");
   const msgEl = document.getElementById(`${id}Msg`);
   if (msgEl) msgEl.textContent = "";
 
-  // show feedback
   if (value !== "" && !valid) {
     el.classList.add("invalid");
     if (msgEl) msgEl.textContent = message;

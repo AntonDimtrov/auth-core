@@ -1,4 +1,3 @@
-// script.js
 import { show, hide } from "./js/dom-utils.js";
 import { validateField } from "./js/validation.js";
 import { register, login } from "./js/auth.js";
