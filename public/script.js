@@ -89,3 +89,76 @@ async function logout() {
 function val(id) {
   return document.getElementById(id).value.trim();
 }
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const path = window.location.pathname;
+
+  if (path.endsWith("/profile.html")) {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location = "/";
+      return;
+    }
+
+    await loadProfile(token);
+
+    document.getElementById("editBtn").addEventListener("click", showEditForm);
+    document.getElementById("saveBtn").addEventListener("click", saveProfile);
+    document
+      .getElementById("cancelBtn")
+      .addEventListener("click", hideEditForm);
+    document.getElementById("logoutBtn").addEventListener("click", logout);
+  }
+});
+
+async function loadProfile(token) {
+  const res = await fetch(`/api/session?token=${token}`);
+  const data = await res.json();
+  if (!res.ok) {
+    alert(data.error || "Unable to load profile");
+    return;
+  }
+
+  const u = data.user;
+  document.getElementById("pEmail").textContent = u.email;
+  document.getElementById("pFirst").textContent = u.first_name;
+  document.getElementById("pLast").textContent = u.last_name;
+}
+
+function showEditForm() {
+  document.getElementById("profileView").style.display = "none";
+  document.getElementById("profileEdit").style.display = "block";
+}
+
+function hideEditForm() {
+  document.getElementById("profileEdit").style.display = "none";
+  document.getElementById("profileView").style.display = "block";
+}
+
+async function saveProfile() {
+  const token = localStorage.getItem("token");
+  const body = {
+    token,
+    firstName: document.getElementById("newFirst").value,
+    lastName: document.getElementById("newLast").value,
+    password: document.getElementById("newPass").value,
+  };
+
+  const res = await fetch("/api/update", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  const data = await res.json();
+
+  const msg = document.getElementById("message");
+  if (res.ok) {
+    msg.className = "success";
+    hideEditForm();
+    document.getElementById("pFirst").textContent = data.user.first_name;
+    document.getElementById("pLast").textContent = data.user.last_name;
+  } else {
+    msg.textContent = data.error || "Update failed";
+    msg.className = "error";
+  }
+}

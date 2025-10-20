@@ -7,10 +7,25 @@
   </head>
   <body>
     <div class="container">
-      <h1>Profile</h1>
-      <p id="whoami">You are logged in.</p>
-      <button id="logoutBtn">Logout</button>
+      <h1>Your Profile</h1>
+
+      <div id="profileView">
+        <p><strong>Email:</strong> <span id="pEmail">—</span></p>
+        <p><strong>First Name:</strong> <span id="pFirst">—</span></p>
+        <p><strong>Last Name:</strong> <span id="pLast">—</span></p>
+        <button id="editBtn">Edit Profile</button>
+        <button id="logoutBtn">Logout</button>
+      </div>
+
+      <div id="profileEdit" style="display: none">
+        <input id="newFirst" placeholder="New First Name" />
+        <input id="newLast" placeholder="New Last Name" />
+        <input id="newPass" type="password" placeholder="New Password" />
+        <button id="saveBtn">Save Changes</button>
+        <button id="cancelBtn">Cancel</button>
+      </div>
     </div>
+
     <script src="script.js"></script>
   </body>
 </html>
