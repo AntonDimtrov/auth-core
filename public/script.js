@@ -80,7 +80,7 @@ async function register() {
   const password = val("rPass");
 
   if (!validateCaptcha()) {
-    alert("Wrong CAPTCHA!");
+    showToast("Wrong CAPTCHA!", "error");
     generateCaptcha();
     return;
   }
@@ -104,7 +104,7 @@ async function register() {
   }
 
   if (!valid) {
-    alert("Please fix highlighted fields");
+    showToast("Please fix highlighted fields", "error");
     return;
   }
 
@@ -118,10 +118,10 @@ async function register() {
   generateCaptcha();
 
   if (res.status === 201) {
-    alert("Registered successfully!");
+    showToast("Registration successful! You can now log in.");
     clearForm(["rEmail", "rFirst", "rLast", "rPass", "captchaInput"]);
   } else {
-    alert(data.error || "Registration failed");
+    showToast(data.error || "Registration failed", "error");
   }
 }
 
@@ -138,11 +138,15 @@ async function login() {
   const data = await res.json();
 
   if (res.ok) {
+    showToast("Login successful!", "success");
     localStorage.setItem("token", data.user.session_id);
     localStorage.setItem("user", JSON.stringify(data.user));
-    window.location = "/profile.html";
+
+    setTimeout(() => {
+      window.location = "/profile.html";
+    }, 100);
   } else {
-    alert(data.error || "Login failed");
+    showToast(data.error || "Login failed", "error");
   }
 }
 
@@ -174,7 +178,7 @@ async function loadProfile(token) {
   const data = await res.json();
 
   if (!res.ok) {
-    alert(data.error || "Unable to load profile");
+    showToast(data.error || "Unable to load profile", "error");
     return;
   }
 
@@ -193,34 +197,38 @@ function hideEditForm() {
   show("profileView");
   hide("profileEdit");
 }
-
 async function saveProfile() {
   const token = localStorage.getItem("token");
-  const body = {
-    token,
-    firstName: val("newFirst"),
-    lastName: val("newLast"),
-    password: val("newPass"),
-  };
+  const firstName = val("newFirst");
+  const lastName = val("newLast");
+  const password = val("newPass");
 
-  const res = await fetch("/api/update", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
+  if (!firstName && !lastName && !password) {
+    showToast("No fields to update", "error");
+    return;
+  }
 
-  const data = await res.json();
-  const msg = document.getElementById("message");
+  try {
+    const res = await fetch("/api/update", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token, firstName, lastName, password }),
+    });
 
-  if (res.ok) {
-    msg.textContent = "Profile updated successfully!";
-    msg.className = "success";
-    hideEditForm();
+    const data = await res.json();
+
+    if (!res.ok) {
+      showToast(data.error || "Update failed", "error");
+      return;
+    }
+
+    showToast("Profile updated successfully!", "success");
+
     document.getElementById("pFirst").textContent = data.user.first_name;
     document.getElementById("pLast").textContent = data.user.last_name;
-  } else {
-    msg.textContent = data.error || "Update failed";
-    msg.className = "error";
+  } catch (err) {
+    console.error(err);
+    showToast("Something went wrong", "error");
   }
 }
 
@@ -268,4 +276,24 @@ function validateField(el) {
     el.classList.add("invalid");
     if (msgEl) msgEl.textContent = message;
   }
+}
+
+function showToast(message, type = "success") {
+  let container = document.querySelector(".toast-container");
+  if (!container) {
+    container = document.createElement("div");
+    container.className = "toast-container";
+    document.body.appendChild(container);
+  }
+
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+    if (!container.hasChildNodes()) container.remove();
+  }, 2000);
 }
